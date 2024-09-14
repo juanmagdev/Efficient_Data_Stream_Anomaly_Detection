@@ -266,7 +266,7 @@ def simulate_month():
                 if current_day_transactions >= anomaly_threshold_upper * average_transactions_per_hour:
                     anomaly_hours.append(hour)  # Record the hour with an anomaly
                     log_text += (f"Anomalous number of transactions detected at Day {day}, Hour {hour}: "
-                                 f"{current_day_transactions} transactions (Upper threshold) {average_transactions_per_hour}\n")
+                                 f"{current_day_transactions} transactions | (Upper threshold) {average_transactions_per_hour} transactions average\n")
                     with open("anomalous_transactions.txt", "a") as file:
                         file.write(f"Anomalous number of transactions detected at Day {day}, Hour {hour}: {current_day_transactions} transactions (Upper threshold)\n")
                 
@@ -274,7 +274,7 @@ def simulate_month():
                 elif current_day_transactions <= anomaly_threshold_lower * average_transactions_per_hour:
                     anomaly_hours.append(hour)  # Record the hour with an anomaly
                     log_text += (f"Anomalous number of transactions detected at Day {day}, Hour {hour}: "
-                                 f"{current_day_transactions} transactions (Lower threshold) {average_transactions_per_hour}\n")
+                                 f"{current_day_transactions} transactions | (Lower threshold) {average_transactions_per_hour} transactions average\n")
                     with open("anomalous_transactions.txt", "a") as file:
                         file.write(f"Anomalous number of transactions detected at Day {day}, Hour {hour}: {current_day_transactions} transactions (Lower threshold)\n")
 
@@ -293,12 +293,12 @@ def simulate_month():
                 # Check for value anomalies
                 if transaction >= 4 * average_value:  # Upper threshold for anomalous values
                     anomalies_indices.append(len(daily_transaction_values) - 1)  # Store the index of the anomaly
-                    log_text += (f"Anomalous transaction detected on {key}: {transaction} euros (Upper threshold) {average_value}\n")
+                    log_text += (f"Anomalous transaction detected on {key}: {transaction} euros | (Upper threshold) {average_value} euros average\n")
                     with open("anomalous_transactions.txt", "a") as file:
                         file.write(f"{key}: {transaction}\n")
                 elif transaction <= 100:  # Lower threshold for anomalous values
                     anomalies_indices.append(len(daily_transaction_values) - 1)  # Store the index of the anomaly
-                    log_text += (f"Anomalous transaction detected on {key}: {transaction} euros (Lower threshold) {average_value}\n")
+                    log_text += (f"Anomalous transaction detected on {key}: {transaction} euros | (Lower threshold) {average_value} euros average\n")
                     with open("anomalous_transactions.txt", "a") as file:
                         file.write(f"{key}: {transaction}\n")
 
@@ -377,11 +377,18 @@ def plot_daily_data(day, hourly_transactions_avg, hourly_transactions_current, d
     ax3.axis('off')  # Hide the axis and borders around the text area
 
     # Update the global figure title
-    fig.suptitle(f'Transactions Overview for Day {day}')
+    fig.suptitle(f'Transactions Overview for Day {day}', fontsize=16, weight='bold')
+    # Set the window title for the plot
+    fig.canvas.manager.set_window_title("Efficient Data Stream Anomaly Detection")  
     
     # Redraw the figure to reflect the new plots
     plt.draw()
-    plt.pause(1.5)  # Pause for 1.5 seconds to allow visualization before updating the plot
+    if day < 5:
+        plt.pause(2.5)  # Pause to allow visualization before updating the plot
+    elif day < 15:
+        plt.pause(1.8)  # Pause to allow visualization before updating the plot
+    else:
+        plt.pause(1.2)  # Pause to allow visualization before updating the plot
 
 
 def main():
