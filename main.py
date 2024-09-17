@@ -10,14 +10,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-try:
-    import numpy as np
-    import matplotlib.pyplot as plt
-    print("All required libraries are installed.")
-except ImportError as e:
-    print(f"Library missing: {e}")
-
-
 hours = 24 # Number of hours, perform a day
 days = 30 # Number of days, perform a month    <- Change this value to simulate more days
 
